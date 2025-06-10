@@ -45,10 +45,11 @@ function App() {
   };
 
   const convertToLigaFormat = (record: RecordType) => {
-    const card = `${record["Quantidade"]} ${record["Card (EN)"]} [QUALIDADE=SP] [EDICAO=${record["Edicao (Sigla)"]}]`;
+    let card = `${record["Quantidade"]} ${record["Card (EN)"]} [QUALIDADE=SP] [EDICAO=${record["Edicao (Sigla)"]}]`;
     if (record["Extras"]) {
+      console.log("Extras found:", record["Extras"]);
       if (record["Extras"].split(",").length) {
-        card.concat(` [EXTRAS=${record["Extras"]}]`);
+        card+=(` [EXTRAS=${record["Extras"]}]`);
       }
     }
     return card;
