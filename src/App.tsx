@@ -47,7 +47,7 @@ function App() {
   const convertToLigaFormat = (record: RecordType) => {
     const card = `${record["Quantidade"]} ${record["Card (EN)"]} [QUALIDADE=SP] [EDICAO=${record["Edicao (Sigla)"]}]`;
     if (record["Extras"]) {
-      if (record["Extras"].split(",").length === 1) {
+      if (record["Extras"].split(",").length) {
         card.concat(` [EXTRAS=${record["Extras"]}]`);
       }
     }
