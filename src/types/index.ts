@@ -9,4 +9,12 @@ export type ConversionOptions = {
   condition: string;
   ignoreEdition: boolean;
   forceCondition: boolean;
+  addToList: boolean;
+};
+
+export type FileData = {
+  id: string;
+  name: string;
+  records: RecordType[];
+  included: boolean;
 };

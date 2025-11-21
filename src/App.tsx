@@ -1,12 +1,19 @@
+import { useEffect } from "react";
 import { Divider, Flex, Spin } from "antd";
-import { Uploader, OptionsPanel, OutputPanel } from "./components";
-import { useFileProcessor } from "./hooks/useFileProcessor";
+
+import { FileList, OptionsPanel, OutputPanel, Uploader } from "./components";
 import { useConversionOptions } from "./hooks/useConversionOptions";
+import { useFileProcessor } from "./hooks/useFileProcessor";
 
 function App() {
-  const { processingFiles, storedRecords, handleFiles } = useFileProcessor();
-  const { options, setOptions, parsedFile } =
-    useConversionOptions(storedRecords);
+  const { options, setOptions, parsedFile, reprocessRecords } =
+    useConversionOptions();
+  const { processingFiles, fileDataList, handleFiles, toggleFileIncluded } =
+    useFileProcessor(options.addToList);
+
+  useEffect(() => {
+    reprocessRecords(fileDataList);
+  }, [fileDataList, reprocessRecords]);
 
   return (
     <Flex vertical className="!p-5">
@@ -25,6 +32,8 @@ function App() {
           <Uploader onChange={handleFiles} />
         </Spin>
       </Flex>
+
+      <FileList files={fileDataList} onToggleIncluded={toggleFileIncluded} />
 
       <Divider />
 

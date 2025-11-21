@@ -12,11 +12,12 @@
   "dependencies": {
     "@ant-design/icons": "^6.0.0",
     "@tailwindcss/vite": "^4.1.8",
-    "antd": "^5.25.4",
+    "antd": "^6.0.0",
     "csv-parse": "^5.6.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "tailwindcss": "^4.1.8"
+    "tailwindcss": "^4.1.8",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
