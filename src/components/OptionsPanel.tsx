@@ -1,15 +1,20 @@
-import { Checkbox, Dropdown, Flex, Typography } from "antd";
+import { Button, Checkbox, Dropdown, Flex, Typography } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import { CONDITION_MAP, CONDITION_OPTIONS } from "../constants";
 import type { ConversionOptions } from "../types";
 
 interface OptionsPanelProps {
   options: ConversionOptions;
   onOptionsChange: (options: ConversionOptions) => void;
+  onReset: () => void;
+  hasFiles: boolean;
 }
 
 export const OptionsPanel = ({
   options,
   onOptionsChange,
+  onReset,
+  hasFiles,
 }: OptionsPanelProps) => {
   const handleOptionChange = <K extends keyof ConversionOptions>(
     key: K,
@@ -20,7 +25,18 @@ export const OptionsPanel = ({
 
   return (
     <Flex vertical className="justify-center align-middle w-full !p-5 !mb-10">
-      <h2 className="text-2xl font-bold mb-4">Options</h2>
+      <Flex justify="space-between" align="center" className="!mb-4">
+        <h2 className="text-2xl font-bold">Options</h2>
+        {hasFiles && (
+          <Button
+            danger
+            icon={<DeleteOutlined />}
+            onClick={onReset}
+          >
+            Reset
+          </Button>
+        )}
+      </Flex>
       <Flex gap="large" wrap>
         <Flex align="center" gap="small">
           <Checkbox
@@ -58,12 +74,6 @@ export const OptionsPanel = ({
           onChange={(e) => handleOptionChange("ignoreEdition", e.target.checked)}
         >
           Ignore Edition
-        </Checkbox>
-        <Checkbox
-          checked={options.addToList}
-          onChange={(e) => handleOptionChange("addToList", e.target.checked)}
-        >
-          Add to list
         </Checkbox>
       </Flex>
     </Flex>

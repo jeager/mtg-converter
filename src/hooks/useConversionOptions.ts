@@ -3,8 +3,12 @@ import { DEFAULT_OPTIONS } from "../constants";
 import { convertRecordsToLigaFormat } from "../utils/ligaConverter";
 import type { ConversionOptions, FileData } from "../types";
 
-export const useConversionOptions = () => {
-  const [options, setOptions] = useState<ConversionOptions>(DEFAULT_OPTIONS);
+export const useConversionOptions = (
+  initialOptions?: ConversionOptions
+) => {
+  const [options, setOptions] = useState<ConversionOptions>(
+    initialOptions ?? DEFAULT_OPTIONS
+  );
   const [parsedFile, setParsedFile] = useState<string>("");
 
   const reprocessRecords = useCallback(

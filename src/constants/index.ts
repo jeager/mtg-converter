@@ -16,7 +16,6 @@ export const DEFAULT_OPTIONS = {
   condition: "nm",
   ignoreEdition: false,
   forceCondition: false,
-  addToList: false,
 } as const;
 
 /**

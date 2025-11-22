@@ -16,10 +16,5 @@ export const useStateRef = <T>(initialValue: T) => {
     ref.current = value;
   }, [value]);
 
-  // Update state when initialValue changes
-  useEffect(() => {
-    setValue(initialValue);
-  }, [initialValue]);
-
   return [value, setValue, ref] as const;
 };

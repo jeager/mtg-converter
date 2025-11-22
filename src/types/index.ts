@@ -1,3 +1,5 @@
+import type { RcFile } from "antd/es/upload";
+
 export type RecordType = {
   Quantidade: string;
   "Card (EN)": string;
@@ -9,7 +11,6 @@ export type ConversionOptions = {
   condition: string;
   ignoreEdition: boolean;
   forceCondition: boolean;
-  addToList: boolean;
 };
 
 export type FileData = {
@@ -17,4 +18,13 @@ export type FileData = {
   name: string;
   records: RecordType[];
   included: boolean;
+  isRestored: boolean;
 };
+
+export interface EnhancedRcFile extends Omit<RcFile, 'uid'> {
+  isRestored: boolean;
+  // if not empty, it means it's a uploaded file
+  uid: string;
+  // if not empty, it mean it's a restored file
+  id?: string;
+}
