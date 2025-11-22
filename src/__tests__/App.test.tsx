@@ -1,7 +1,8 @@
-import { render, screen, waitFor } from '@testing-library/react';
+/* eslint-disable @typescript-eslint/no-require-imports */
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
-import type { FileData, ConversionOptions } from '../types';
+import type { FileData } from '../types';
 
 // Mock all hooks
 jest.mock('../hooks/useSessionStorage', () => ({
