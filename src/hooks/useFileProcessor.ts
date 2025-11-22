@@ -48,7 +48,7 @@ export const useFileProcessor = () => {
       // Get current file list from ref (always has latest data, even in callbacks)
       const fileDataFromRef = fileDataListRef.current;
 
-      if (files.length === 0) return;
+      if (files.length === 0) return[];
 
       setProcessingFiles(true);
       try {

@@ -54,6 +54,25 @@ pnpm build
 
 The built files will be available in the `dist` directory.
 
+### Running Tests
+
+The project uses Jest and React Testing Library for testing. To run tests:
+
+```bash
+# Run all tests
+pnpm test
+
+# Run tests in watch mode
+pnpm test:watch
+
+# Run tests with coverage report
+pnpm test:coverage
+```
+
+Tests are located in `__tests__` directories alongside the source files they test.
+
+**Note:** There is a known compatibility issue between React 19 and @testing-library/react regarding `React.act`. The tests are properly structured and will work once the testing library is fully updated for React 19 compatibility. In the meantime, you may see deprecation warnings, but the tests should still execute.
+
 ## 📖 How to Use
 
 ### 1. Prepare Your CSV File
@@ -110,6 +129,7 @@ The application converts your CSV data to Liga Magic format:
 - **Styling**: Tailwind CSS
 - **Build Tool**: Vite
 - **CSV Parsing**: csv-parse
+- **Testing**: Jest, React Testing Library
 - **Linting**: ESLint
 
 ## 📁 Project Structure
