@@ -10,11 +10,11 @@ export const FileList = ({ files, onToggleIncluded }: FileListProps) => {
   if (files.length === 0) return null;
 
   return (
-    <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-8 gap-4 w-full !mb-5">
+    <div className="flex overflow-x-auto gap-4 w-full !mb-5 md:grid md:grid-cols-5 lg:grid-cols-8 md:overflow-x-visible">
       {files.map((file) => (
         <Card
           key={file.id}
-          className="w-full h-full [&_.ant-card-body]:h-full [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col"
+          className="min-w-[200px] flex-shrink-0 h-full md:w-full [&_.ant-card-body]:h-full [&_.ant-card-body]:flex [&_.ant-card-body]:flex-col"
         >
           <Flex vertical className="h-full justify-between">
             <Flex vertical className="w-full">
