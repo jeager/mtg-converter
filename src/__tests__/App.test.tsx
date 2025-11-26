@@ -1,46 +1,50 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
+import { describe, it, beforeEach, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
 import type { FileData } from '../types';
+import * as useFileProcessorModule from '../hooks/useFileProcessor';
+import * as useSessionStorageModule from '../hooks/useSessionStorage';
+import * as useConversionOptionsModule from '../hooks/useConversionOptions';
 
 // Mock all hooks
-jest.mock('../hooks/useSessionStorage', () => ({
-  useSessionStorage: jest.fn(() => ({
+vi.mock('../hooks/useSessionStorage', () => ({
+  useSessionStorage: vi.fn(() => ({
+    hasStoredSession: false,
     showRestoreModal: false,
     storedSession: null,
-    restoreSession: jest.fn(() => null),
-    startNewSession: jest.fn(),
-    saveCurrentSession: jest.fn(),
+    restoreSession: vi.fn(() => null),
+    startNewSession: vi.fn(),
+    saveCurrentSession: vi.fn(),
   })),
 }));
 
-jest.mock('../hooks/useFileProcessor', () => ({
-  useFileProcessor: jest.fn(() => ({
+vi.mock('../hooks/useFileProcessor', () => ({
+  useFileProcessor: vi.fn(() => ({
     processingFiles: false,
     fileDataList: [],
-    handleFiles: jest.fn(),
-    restoreFileDataList: jest.fn(),
-    resetFiles: jest.fn(),
-    toggleFileIncluded: jest.fn(),
+    handleFiles: vi.fn(),
+    restoreFileDataList: vi.fn(),
+    resetFiles: vi.fn(),
+    toggleFileIncluded: vi.fn(),
   })),
 }));
 
-jest.mock('../hooks/useConversionOptions', () => ({
-  useConversionOptions: jest.fn(() => ({
+vi.mock('../hooks/useConversionOptions', () => ({
+  useConversionOptions: vi.fn(() => ({
     options: {
       condition: 'nm',
       ignoreEdition: false,
       forceCondition: false,
     },
-    setOptions: jest.fn(),
+    setOptions: vi.fn(),
     parsedFile: '',
-    reprocessRecords: jest.fn(),
+    reprocessRecords: vi.fn(),
   })),
 }));
 
 // Mock components
-jest.mock('../components/Uploader', () => ({
+vi.mock('../components/Uploader', () => ({
   Uploader: ({ onChange }: { onChange: (files: unknown[]) => void }) => (
     <div data-testid="uploader">
       <button onClick={() => onChange([])}>Upload</button>
@@ -48,7 +52,7 @@ jest.mock('../components/Uploader', () => ({
   ),
 }));
 
-jest.mock('../components/FileList', () => ({
+vi.mock('../components/FileList', () => ({
   FileList: ({ files, onToggleIncluded }: { files: FileData[]; onToggleIncluded: (id: string) => void }) => {
     if (files.length === 0) return null;
     return (
@@ -64,7 +68,7 @@ jest.mock('../components/FileList', () => ({
   },
 }));
 
-jest.mock('../components/SessionRestoreModal', () => ({
+vi.mock('../components/SessionRestoreModal', () => ({
   SessionRestoreModal: ({ open, onRestore, onStartNew }: { open: boolean; onRestore: () => void; onStartNew: () => void }) => {
     if (!open) return null;
     return (
@@ -78,12 +82,12 @@ jest.mock('../components/SessionRestoreModal', () => ({
 
 describe('App', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should render the main title', () => {
     render(<App />);
-    expect(screen.getByText('MTG Converter')).toBeInTheDocument();
+    expect(screen.getByText('MTG Conversor')).toBeInTheDocument();
   });
 
   it('should render OptionsPanel', () => {
@@ -103,7 +107,7 @@ describe('App', () => {
   });
 
   it('should render FileList when there are files', () => {
-    const { useFileProcessor } = require('../hooks/useFileProcessor');
+    const useFileProcessor = vi.mocked(useFileProcessorModule.useFileProcessor);
     useFileProcessor.mockReturnValue({
       processingFiles: false,
       fileDataList: [
@@ -115,10 +119,10 @@ describe('App', () => {
           isRestored: false,
         },
       ],
-      handleFiles: jest.fn(),
-      restoreFileDataList: jest.fn(),
-      resetFiles: jest.fn(),
-      toggleFileIncluded: jest.fn(),
+      handleFiles: vi.fn(),
+      restoreFileDataList: vi.fn(),
+      resetFiles: vi.fn(),
+      toggleFileIncluded: vi.fn(),
     });
 
     render(<App />);
@@ -128,21 +132,24 @@ describe('App', () => {
   });
 
   it('should show session restore modal when showRestoreModal is true', () => {
-    const { useSessionStorage } = require('../hooks/useSessionStorage');
+    const useSessionStorage = vi.mocked(useSessionStorageModule.useSessionStorage);
     useSessionStorage.mockReturnValue({
+      hasStoredSession: true,
       showRestoreModal: true,
       storedSession: {
+        version: '1.0.0',
         fileDataList: [],
         options: { condition: 'nm', ignoreEdition: false, forceCondition: false },
         timestamp: Date.now(),
       },
-      restoreSession: jest.fn(() => ({
+      restoreSession: vi.fn(() => ({
+        version: '1.0.0',
         fileDataList: [],
         options: { condition: 'nm', ignoreEdition: false, forceCondition: false },
         timestamp: Date.now(),
       })),
-      startNewSession: jest.fn(),
-      saveCurrentSession: jest.fn(),
+      startNewSession: vi.fn(),
+      saveCurrentSession: vi.fn(),
     });
 
     render(<App />);
@@ -151,44 +158,47 @@ describe('App', () => {
 
   it('should call restoreSession when restore button is clicked', async () => {
     const user = userEvent.setup({ delay: null });
-    const mockRestoreSession = jest.fn(() => ({
+    const mockRestoreSession = vi.fn(() => ({
+      version: '1.0.0',
       fileDataList: [],
       options: { condition: 'nm', ignoreEdition: false, forceCondition: false },
       timestamp: Date.now(),
     }));
 
-    const { useSessionStorage } = require('../hooks/useSessionStorage');
+    const useSessionStorage = vi.mocked(useSessionStorageModule.useSessionStorage);
     useSessionStorage.mockReturnValue({
+      hasStoredSession: true,
       showRestoreModal: true,
       storedSession: {
+        version: '1.0.0',
         fileDataList: [],
         options: { condition: 'nm', ignoreEdition: false, forceCondition: false },
         timestamp: Date.now(),
       },
       restoreSession: mockRestoreSession,
-      startNewSession: jest.fn(),
-      saveCurrentSession: jest.fn(),
+      startNewSession: vi.fn(),
+      saveCurrentSession: vi.fn(),
     });
 
-    const mockRestoreFileDataList = jest.fn();
-    const mockSetOptions = jest.fn();
+    const mockRestoreFileDataList = vi.fn();
+    const mockSetOptions = vi.fn();
 
-    const { useFileProcessor } = require('../hooks/useFileProcessor');
+    const useFileProcessor = vi.mocked(useFileProcessorModule.useFileProcessor);
     useFileProcessor.mockReturnValue({
       processingFiles: false,
       fileDataList: [],
-      handleFiles: jest.fn(),
+      handleFiles: vi.fn(),
       restoreFileDataList: mockRestoreFileDataList,
-      resetFiles: jest.fn(),
-      toggleFileIncluded: jest.fn(),
+      resetFiles: vi.fn(),
+      toggleFileIncluded: vi.fn(),
     });
 
-    const { useConversionOptions } = require('../hooks/useConversionOptions');
+    const useConversionOptions = vi.mocked(useConversionOptionsModule.useConversionOptions);
     useConversionOptions.mockReturnValue({
       options: { condition: 'nm', ignoreEdition: false, forceCondition: false },
       setOptions: mockSetOptions,
       parsedFile: '',
-      reprocessRecords: jest.fn(),
+      reprocessRecords: vi.fn(),
     });
 
     render(<App />);
@@ -200,40 +210,42 @@ describe('App', () => {
 
   it('should call startNewSession when start new button is clicked', async () => {
     const user = userEvent.setup({ delay: null });
-    const mockStartNewSession = jest.fn();
+    const mockStartNewSession = vi.fn();
 
-    const { useSessionStorage } = require('../hooks/useSessionStorage');
+    const useSessionStorage = vi.mocked(useSessionStorageModule.useSessionStorage);
     useSessionStorage.mockReturnValue({
+      hasStoredSession: true,
       showRestoreModal: true,
       storedSession: {
+        version: '1.0.0',
         fileDataList: [],
         options: { condition: 'nm', ignoreEdition: false, forceCondition: false },
         timestamp: Date.now(),
       },
-      restoreSession: jest.fn(),
+      restoreSession: vi.fn(),
       startNewSession: mockStartNewSession,
-      saveCurrentSession: jest.fn(),
+      saveCurrentSession: vi.fn(),
     });
 
-    const mockResetFiles = jest.fn();
-    const mockSetOptions = jest.fn();
+    const mockResetFiles = vi.fn();
+    const mockSetOptions = vi.fn();
 
-    const { useFileProcessor } = require('../hooks/useFileProcessor');
+    const useFileProcessor = vi.mocked(useFileProcessorModule.useFileProcessor);
     useFileProcessor.mockReturnValue({
       processingFiles: false,
       fileDataList: [],
-      handleFiles: jest.fn(),
-      restoreFileDataList: jest.fn(),
+      handleFiles: vi.fn(),
+      restoreFileDataList: vi.fn(),
       resetFiles: mockResetFiles,
-      toggleFileIncluded: jest.fn(),
+      toggleFileIncluded: vi.fn(),
     });
 
-    const { useConversionOptions } = require('../hooks/useConversionOptions');
+    const useConversionOptions = vi.mocked(useConversionOptionsModule.useConversionOptions);
     useConversionOptions.mockReturnValue({
       options: { condition: 'nm', ignoreEdition: false, forceCondition: false },
       setOptions: mockSetOptions,
       parsedFile: '',
-      reprocessRecords: jest.fn(),
+      reprocessRecords: vi.fn(),
     });
 
     render(<App />);
@@ -245,12 +257,12 @@ describe('App', () => {
   });
 
   it('should render OutputPanel with parsed file', () => {
-    const { useConversionOptions } = require('../hooks/useConversionOptions');
+    const useConversionOptions = vi.mocked(useConversionOptionsModule.useConversionOptions);
     useConversionOptions.mockReturnValue({
       options: { condition: 'nm', ignoreEdition: false, forceCondition: false },
-      setOptions: jest.fn(),
+      setOptions: vi.fn(),
       parsedFile: '4 Lightning Bolt [QUALIDADE=nm] [EDICAO=M21]',
-      reprocessRecords: jest.fn(),
+      reprocessRecords: vi.fn(),
     });
 
     render(<App />);
@@ -260,9 +272,9 @@ describe('App', () => {
 
   it('should call toggleFileIncluded when file toggle is clicked', async () => {
     const user = userEvent.setup({ delay: null });
-    const mockToggleFileIncluded = jest.fn();
+    const mockToggleFileIncluded = vi.fn();
 
-    const { useFileProcessor } = require('../hooks/useFileProcessor');
+    const useFileProcessor = vi.mocked(useFileProcessorModule.useFileProcessor);
     useFileProcessor.mockReturnValue({
       processingFiles: false,
       fileDataList: [
@@ -274,9 +286,9 @@ describe('App', () => {
           isRestored: false,
         },
       ],
-      handleFiles: jest.fn(),
-      restoreFileDataList: jest.fn(),
-      resetFiles: jest.fn(),
+      handleFiles: vi.fn(),
+      restoreFileDataList: vi.fn(),
+      resetFiles: vi.fn(),
       toggleFileIncluded: mockToggleFileIncluded,
     });
 
@@ -288,14 +300,14 @@ describe('App', () => {
   });
 
   it('should show processing spinner when processingFiles is true', () => {
-    const { useFileProcessor } = require('../hooks/useFileProcessor');
+    const useFileProcessor = vi.mocked(useFileProcessorModule.useFileProcessor);
     useFileProcessor.mockReturnValue({
       processingFiles: true,
       fileDataList: [],
-      handleFiles: jest.fn(),
-      restoreFileDataList: jest.fn(),
-      resetFiles: jest.fn(),
-      toggleFileIncluded: jest.fn(),
+      handleFiles: vi.fn(),
+      restoreFileDataList: vi.fn(),
+      resetFiles: vi.fn(),
+      toggleFileIncluded: vi.fn(),
     });
 
     render(<App />);

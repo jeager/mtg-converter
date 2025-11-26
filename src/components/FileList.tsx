@@ -31,7 +31,7 @@ export const FileList = ({ files, onToggleIncluded }: FileListProps) => {
                 type={file.included ? undefined : "secondary"}
                 className="text-sm"
               >
-                {file.included ? "Included" : "Excluded"}
+                {file.included ? "Incluída" : "Excluída"}
               </Typography.Text>
               <Switch
                 checked={file.included}

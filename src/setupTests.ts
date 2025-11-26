@@ -1,24 +1,8 @@
-import '@testing-library/jest-dom';
+import { afterEach } from "vitest";
+import { cleanup } from "@testing-library/react";
+import "@testing-library/jest-dom/vitest";
 
-// Mock window.matchMedia
-Object.defineProperty(window, 'matchMedia', {
-  writable: true,
-  value: jest.fn().mockImplementation((query) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn(),
-  })),
+// runs a clean after each test case (e.g. clearing jsdom)
+afterEach(() => {
+  cleanup();
 });
-
-// Mock ResizeObserver
-(globalThis as typeof globalThis & { ResizeObserver: typeof ResizeObserver }).ResizeObserver = jest.fn().mockImplementation(() => ({
-  observe: jest.fn(),
-  unobserve: jest.fn(),
-  disconnect: jest.fn(),
-})) as unknown as typeof ResizeObserver;
-

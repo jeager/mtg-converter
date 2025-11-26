@@ -24,18 +24,20 @@ export const OutputPanel = ({ parsedFile }: OutputPanelProps) => {
       {showAlert && (
         <Flex className="absolute bottom-5 z-10 right-10">
           <Alert
-            message="Copied to clipboard!"
+            title="Copiado para área de transferência!"
             type="success"
             showIcon
-            closable
-            onClose={() => setShowAlert(false)}
+            closable={{
+              closeIcon: true,
+              onClose: () => setShowAlert(false),
+            }}
           />
         </Flex>
       )}
       <Flex vertical className="p-20">
         <Flex className="!mb-5">
           <Button icon={<CopyOutlined />} onClick={handleCopy}>
-            Copy
+            Copiar
           </Button>
         </Flex>
         <TextArea value={parsedFile} rows={15} cols={20} readOnly />

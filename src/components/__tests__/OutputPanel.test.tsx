@@ -1,3 +1,4 @@
+import { describe, it, vi } from "vitest";
 import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { OutputPanel } from "../OutputPanel";
@@ -27,9 +28,9 @@ describe("OutputPanel", () => {
     });
 
     // Mock clipboard API
-    const writeTextMock = jest
+    const writeTextMock = vi
       .spyOn(navigator.clipboard, "writeText")
-      .mockResolvedValue();
+      .mockResolvedValue(undefined);
 
     const copyButton = screen.getByRole("button", { name: /copy/i });
     await user.click(copyButton);
@@ -47,7 +48,7 @@ describe("OutputPanel", () => {
 
     // Alert should appear
     await waitFor(() => {
-      expect(screen.getByText(/copied to clipboard!/i)).toBeInTheDocument();
+      expect(screen.getByText(/copiado/i)).toBeInTheDocument();
     });
   });
 
@@ -61,7 +62,7 @@ describe("OutputPanel", () => {
 
     // Alert should appear
     await waitFor(() => {
-      expect(screen.getByText(/copied to clipboard!/i)).toBeInTheDocument();
+      expect(screen.getByText(/copiado/i)).toBeInTheDocument();
     });
 
     // Find and click the close button
@@ -82,9 +83,9 @@ describe("OutputPanel", () => {
     render(<OutputPanel parsedFile={parsedFile} />);
 
     // Mock clipboard API
-    const writeTextMock = jest
+    const writeTextMock = vi
       .spyOn(navigator.clipboard, "writeText")
-      .mockResolvedValue();
+      .mockResolvedValue(undefined);
 
     const copyButton = screen.getByRole("button", { name: /copy/i });
 

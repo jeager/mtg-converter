@@ -43,13 +43,13 @@ export const SessionRestoreModal = ({
       title={
         <span>
           <ExclamationCircleOutlined className="mr-2 text-yellow-500" />
-          Restore Previous Session?
+          Restaurar sessão anterior?
         </span>
       }
       onOk={onRestore}
       onCancel={onStartNew}
-      okText="Restore Session"
-      cancelText="Start New Session"
+      okText="Restaurar Sessão"
+      cancelText="Começar nova sessão"
       okButtonProps={{ type: "primary" }}
       cancelButtonProps={{ danger: true }}
       closable={false}
@@ -57,20 +57,20 @@ export const SessionRestoreModal = ({
     >
       <div className="py-4">
         <p className="mb-4">
-          We found a previous session from{" "}
+          Achamos uma sessão salva de{" "}
           <strong>{formatDate(sessionData.timestamp)}</strong>.
         </p>
         <div className="bg-gray-50 p-4 rounded">
           <p className="mb-2">
-            <strong>Previous session details:</strong>
+            <strong>Detalhes da sessão anterior:</strong>
           </p>
           <ul className="list-disc list-inside space-y-1">
-            <li>{fileCount} file{fileCount !== 1 ? "s" : ""} uploaded</li>
-            <li>{totalCards} total card{totalCards !== 1 ? "s" : ""}</li>
+            <li>{fileCount} arquivo{fileCount !== 1 ? "s" : ""} processados</li>
+            <li>{totalCards} total de carta{totalCards !== 1 ? "s" : ""}</li>
           </ul>
         </div>
         <p className="mt-4 text-gray-600">
-          Would you like to restore this session or start fresh?
+          Gostaria de restaurar a sessão ou começar uma nova?
         </p>
       </div>
     </Modal>

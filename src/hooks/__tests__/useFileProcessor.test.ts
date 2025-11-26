@@ -1,14 +1,15 @@
+import { describe, it, beforeEach, vi } from "vitest";
 import { renderHook, waitFor, act } from "@testing-library/react";
 import { useFileProcessor } from "../useFileProcessor";
 import type { EnhancedRcFile, FileData } from "../../types";
 
 // Mock fileProcessor
-jest.mock("../../utils/fileProcessor", () => ({
-  generateFileId: jest.fn(
+vi.mock("../../utils/fileProcessor", () => ({
+  generateFileId: vi.fn(
     (file: { name: string; lastModified: number; size: number }) =>
       `${file.name}-${file.lastModified}-${file.size}`
   ),
-  processFiles: jest.fn(
+  processFiles: vi.fn(
     async (files: EnhancedRcFile[]): Promise<FileData[]> => {
       return files.map((file) => ({
         id: `${file.name}-${file.lastModified}-${file.size}`,
@@ -30,7 +31,7 @@ jest.mock("../../utils/fileProcessor", () => ({
 
 describe("useFileProcessor", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   describe("initial state", () => {

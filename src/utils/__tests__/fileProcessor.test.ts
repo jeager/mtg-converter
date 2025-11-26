@@ -1,3 +1,4 @@
+import { describe, it, vi } from "vitest";
 import type { RcFile } from "antd/es/upload";
 import { generateFileId } from "../fileProcessor";
 import type { EnhancedRcFile } from "../../types";
@@ -18,8 +19,8 @@ const createMockFile = (
 };
 
 // Mock csvParser
-jest.mock("../csvParser", () => ({
-  parseCsv: jest.fn((content: string) => {
+vi.mock("../csvParser", () => ({
+  parseCsv: vi.fn((content: string) => {
     if (content.includes("test-card")) {
       return [
         {

@@ -62,9 +62,11 @@ export const Uploader = ({ name, fileListData, onChange }: UploaderProps) => {
         <InboxOutlined />
       </p>
       <p className="ant-upload-text">
-        Click or drag files to this area to upload
+        Clique or arraste arquivos para a área de carregamento
       </p>
-      <p className="ant-upload-hint">Support for multiple CSV files</p>
+      <p className="ant-upload-hint">
+        Suporta multiplos arquivos CSV de coleção da Liga Magic
+      </p>
     </Dragger>
   );
 };

@@ -90,7 +90,7 @@ function App() {
       />
 
       <Flex justify="center" className="w-full">
-        <h1 className="text-4xl font-bold !mb-8">MTG Converter</h1>
+        <h1 className="text-4xl font-bold !mb-8">MTG Conversor</h1>
       </Flex>
 
       <OptionsPanel
@@ -104,7 +104,7 @@ function App() {
         <Spin
           wrapperClassName="w-full"
           spinning={processingFiles}
-          tip="Processing files..."
+          tip="Processando arquivos..."
         >
           <Uploader fileListData={fileDataList} onChange={handleFiles} />
         </Spin>
